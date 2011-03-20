@@ -2,7 +2,6 @@ package test
 
 import org.scalatest.{ FlatSpec, BeforeAndAfterEach, BeforeAndAfterAll }
 import org.scalatest.matchers.ShouldMatchers
-import org.scalaeye.mongodb._
 import models._
 
 class UserTest extends BaseSuite {

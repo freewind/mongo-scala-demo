@@ -12,16 +12,9 @@ object Question extends MongoObjectShape[Question] { shape =>
 	lazy val collection = db.getCollection("questions") of Question
 	lazy val user = Field.ref("user", User.collection, _.user)
 	lazy val title = Field.scalar("title", _.title, (q: Question, v: String) => q.title = v)
-	object comments extends ArrayEmbeddedField[QComment]("comments", _.comments, Some((q: Question, v: Seq[QComment]) => {
-		println("########## set comments to question: "+v)
-		q.comments = v.toList
-	})) with QCommentIn[Question]
+	object comments extends ArrayEmbeddedField[QComment]("comments", _.comments, Some((q: Question, v: Seq[QComment]) => { q.comments = v.toList })) with QCommentIn[Question]
 	lazy override val * = List(user, title, comments)
-	override def factory(dbo: DBObject) = for (user(u) <- Some(dbo); comments(c) <- Some(dbo)) yield {
-		val q = new Question(u)
-		q.comments = c.toList
-		q
-	}
+	override def factory(dbo: DBObject) = for (user(u) <- Some(dbo)) yield new Question(u)
 }
 
 class QComment(val question: Question) extends MongoObject with Oid {

@@ -2,7 +2,6 @@ package test
 
 import org.scalatest.{ FlatSpec, BeforeAndAfterEach, BeforeAndAfterAll }
 import org.scalatest.matchers.ShouldMatchers
-import org.scalaeye.mongodb._
 import models._
 
 class QuestionTest extends BaseSuite {
@@ -30,7 +29,11 @@ class QuestionTest extends BaseSuite {
 
 		// found
 		val q = questions.headOption.get
-		println("#############: " + q.comments.size)
+
+		// PROBLEMS
+		// I see the comments in `questions` in mongodb, found they don't have a `MongoId` field
+
+		q.comments.size should equal(2) // failed!!!
 	}
 
 }
